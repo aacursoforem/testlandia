@@ -1,5 +1,7 @@
 <?php
 	session_start();
+echo'<pre>'; print_r($_SESSION); echo'</pre>';
+//echo '<p>El id del profesor es '.$_SESSION['id_usuario'].'</p>';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -9,8 +11,10 @@
 	<?php include("../cdns.php");  ?>
 </head> 
 <body>
-<?php// Insertamos la barra de menú con las opciones
-    //include("barra-menu.php");
+<?php 
+// Insertamos la barra de menú con las opciones
+    include("../barra-menu.php");
+
 ?>
 	<div class="jumbotron text-center">
 			<h1>Alta de preguntas</h1>

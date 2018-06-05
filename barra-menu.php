@@ -1,5 +1,7 @@
 <?php
+if (!isset($_SESSION['usuario'])) {
 	session_start();
+}
 // Comprobamos si estamos en el directorio principal de la aplicación
 // mirando si en la actual ubicación existe el fichero cdns.php
 if (file_exists("cdns.php")) { // en caso de estar en directorio principal ruta añadida es vacio
@@ -18,7 +20,7 @@ echo'
   <a class="navbar-brand" href="#">Testlandia</a>
   <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-	  <li class="nav-item dropdown"><a class="nav-link" href="#">Opción uno</a></li>      	  
+	  <li class="nav-item dropdown"><a class="nav-link" href="listado_usuarios.php">Listado usuarios</a></li>      	  
       <li class="nav-item active"><a class="nav-link" href="#">Opción dos</a></li>      
     </ul>
 	

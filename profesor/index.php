@@ -1,3 +1,8 @@
+<?php
+	session_start();
+echo'<pre>'; print_r($_SESSION); echo'</pre>';
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,7 +18,7 @@
 	
 	<p><a href="form_alta_pregunta.php">Alta preguntas</a></p>
 	
-	<p><a href="">Listar preguntas</a></p>
+	<p><a href="listado_preguntas.php">Listar preguntas</a></p>
 	
 	<p><a href="../index.php">Volver al inicio</a></p>
 	

@@ -8,7 +8,8 @@
 	echo'</pre>';
 	
 	$categoria = $_POST['categ'];
-	$profesor = $_POST['id_profesor'];
+	//$profesor = $_POST['id_profesor'];
+	$profesor = $_SESSION['id_usuario'];
 	$pregunta = $_POST['pregunta'];
 	$resp1 = $_POST['resp1'];
 	$resp2 = $_POST['resp2'];

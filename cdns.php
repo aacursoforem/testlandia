@@ -1,6 +1,16 @@
 <?php
 
-if (!file_exists("cdn_local.php")) {   // Estamos en el servidor de clase. Usamos enlaces a bootstrap online
+if (file_exists("cdns.php")) { // en caso de estar en directorio principal ruta añadida es vacio
+	$ruta_aniade = '';	
+}
+else {  
+// en caso contrario estamos en un subdirectorio de directorio principal, por lo que ruta añadida
+// debe incluir subir un nivel
+		$ruta_aniade ='../';	
+}
+
+
+if (!file_exists($ruta_aniade."cdn_local.php")) {   // Estamos en el servidor de clase. Usamos enlaces a bootstrap online
  
 	echo'
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
@@ -11,7 +21,7 @@ if (!file_exists("cdn_local.php")) {   // Estamos en el servidor de clase. Usamo
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">';
 } else { // estamos en servidor home por lo usamos ficheros de bootstrap y font-awesome de home
 
-	require("cdn_local.php");
+	require($ruta_aniade."cdn_local.php");
 
 }
 

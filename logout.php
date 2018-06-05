@@ -5,6 +5,9 @@ $_SESSION = array();
 session_regenerate_id(true);
 session_destroy();
 
-header("location:http://localhost:8080/testlandia/index.php");
 
+// clase
+//header("location:http://localhost:8080/testlandia/index.php");
+// local
+header("location:/cursoForem/testlandia/index.php");
 ?>
