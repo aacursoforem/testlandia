@@ -15,6 +15,11 @@
 		
 		// include("cdns.php");
 	?>
+<style type="text/css">
+
+	.pregunta { color: blue; }
+
+</style>
 	
 </head> 
 
@@ -58,7 +63,7 @@
 	
 	<!-- Mostramos la cabecera de la tabla -->
 	<div class="container">
-	<table class="table table-striped text-center">
+	<table class="table  text-left">
 	
 <?php
 	// Conectamos a la base de datos
@@ -107,11 +112,11 @@
 	while ( $reg = mysqli_fetch_array($registros) ) {
 		$id_pregunta = $reg['id'];
 		?>
-		<tr>
+		<tr class="pregunta">
 			<th><?php echo $reg['id']; ?> </th>
 			<td><?php echo $tiposCategoria[$reg['id_categoria']]; ?> </td>
 			<td><?php echo $reg['pregunta'];?></td>			
-			<td><a href="modificar_pregunta.php?id=<?php echo $reg['id'];?>"><i class="fas fa-edit"></i></a> </td>
+			<td><a href="form_mod_pregunta.php?id=<?php echo $reg['id'];?>"><i class="fas fa-edit"></i></a> </td>
 			<td><a href="eliminar_pregunta.php?id=<?php echo $reg['id'];?>"><i class="fas fa-trash-alt"></i></a> </td>
 		</tr>
 	<?php
@@ -120,9 +125,9 @@
 		$respuestas = mysqli_query($conexion, $sql_res) or die ("Error buscando respuestas");
 		while ($reg_res = mysqli_fetch_array($respuestas) ) {
 		?>
-			<tr  class="" id="">
+			<tr  class="respuesta" id="">
 			<th>&nbsp; </th> <!-- <th> <?php echo $reg_res['id']; ?> </th>  -->
-			<td><?php echo $reg_res['es_correcta']; ?> </td>
+			<td><?php  ($reg_res['es_correcta'] == true ? $v='Correcta' : $v=''); echo $v; ?> </td>
 			<td><?php echo $reg_res['respuesta'];?></td>	
 			<td>&nbsp;</td>			<td>&nbsp;</td>
 <!--		

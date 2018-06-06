@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<title>Login usuario</title>
+	<title>Alumnos</title>
 	<meta charset="utf-8" />
 	<?php
 		include("../cdns.php");  ?>
@@ -26,6 +26,9 @@
 	<?php	include("../barra-menu.php");
 	?>
 	<h1>Página principal del alumno</h1>
+	
+	<p><a href="realizar_examen.php">Realizar examen</a></p>
+	<p><a href="ver_resultados.php">Ver resultados</a></p>
 	
 </body>
 </html>

@@ -50,7 +50,8 @@ echo'<pre>'; print_r($_SESSION); echo'</pre>';
 					<input class="form-control" type="number" name="num_respuestas" id="num_respuestas" min="1" max="4" />
 				</div>
 				-->
-				<?php $_SESSION['id_usuario'] = 0;  ?>
+				<?php //$_SESSION['id_usuario'] = 0;  
+				?>
 				<input type="hidden" name="id_profesor" id="id_profesor" value="<?php echo $_SESSION['id_usuario']; ?>" />
 				
 				<div class="form-group text-left">

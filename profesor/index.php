@@ -1,19 +1,21 @@
 <?php
 	session_start();
-echo'<pre>'; print_r($_SESSION); echo'</pre>';
+	// echo'<pre>'; print_r($_SESSION); echo'</pre>';
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<title>Login usuario</title>
+	<title>Profesores</title>
 	<meta charset="utf-8" />
 	<?php
-		include("../cdns.php");
-	?>
-</head>
-<body>
+		include("../cdns.php");  ?>
 	
+</head>
+
+
+<body>
+<?php	include("../barra-menu.php");
+	?>	
 	Página principal del profesor
 	
 	<p><a href="form_alta_pregunta.php">Alta preguntas</a></p>

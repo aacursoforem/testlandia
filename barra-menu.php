@@ -1,5 +1,5 @@
 <?php
-if (!isset($_SESSION['usuario'])) {
+if (!isset($_SESSION)) {
 	session_start();
 }
 // Comprobamos si estamos en el directorio principal de la aplicación
@@ -20,14 +20,15 @@ echo'
   <a class="navbar-brand" href="#">Testlandia</a>
   <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-	  <li class="nav-item dropdown"><a class="nav-link" href="listado_usuarios.php">Listado usuarios</a></li>      	  
-      <li class="nav-item active"><a class="nav-link" href="#">Opción dos</a></li>      
+	  <li class="nav-item dropdown"><a class="nav-link" href="'.$ruta_aniade.'listado_usuarios.php">Listado usuarios</a></li>      	  
+      <li class="nav-item active"><a class="nav-link" href="'.$ruta_aniade.'alumno/">Alumno</a></li>   
+		<li class="nav-item active"><a class="nav-link" href="'.$ruta_aniade.'profesor/">Profesor</a></li>   	  
     </ul>
 	
 	<ul class="navbar-nav navbar-right">
 ';
 	if (isset($_SESSION['usuario'])) {
-		echo '<li class="nav-item active"><a class="nav-link" href="'.$ruta_aniade.'logout.php"><i class="fas fa-sign-out-alt"></i> Cerrar</a></li>';
+		echo '<li class="nav-item active">Hola '.$_SESSION['usuario'].' <a class="nav-link" href="'.$ruta_aniade.'logout.php">Salir <i class="fas fa-sign-out-alt"></i></a></li>';
 	} else {
 		echo'<li class="nav-item active"><a class="nav-link" href="'.$ruta_aniade.'login_usuario.php"><i class="fas fa-sign-in-alt"></i> Login</a></li>';
 		echo'<li class="nav-item active"><a class="nav-link" href="'.$ruta_aniade.'form_alta_usuario.php">Registro</a></li>';

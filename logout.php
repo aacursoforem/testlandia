@@ -7,7 +7,8 @@ session_destroy();
 
 
 // clase
-//header("location:http://localhost:8080/testlandia/index.php");
+header("location:http://localhost:8080/testlandia/index.php");
+
 // local
-header("location:/cursoForem/testlandia/index.php");
+//header("location:/cursoForem/testlandia/index.php");
 ?>
