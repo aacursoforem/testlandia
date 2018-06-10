@@ -1,7 +1,7 @@
 <?php
-	session_start();
-echo'<pre>'; print_r($_SESSION); echo'</pre>';
-//echo '<p>El id del profesor es '.$_SESSION['id_usuario'].'</p>';
+	require("../verifica_profesor.php");
+//echo'<pre>'; print_r($_SESSION); echo'</pre>';
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -25,12 +25,13 @@ echo'<pre>'; print_r($_SESSION); echo'</pre>';
 			<div class="col-sm-6 offset-sm-3 text-center">
 				<form method="post" action="alta_pregunta.php">
 				<div class="form-group text-left">
-					<label for="categ">Categoría</label>
-					<select name="categ" id="categ">
+					<label for="id_categ">Categoría</label>
+					<select name="id_categ" id="id_categ">
 						<option value="1">Geografía</option>
 						<option value="2">Sistemas operativos</option>
 						<option value="3">Bases de datos</option>
 						<option value="4">Programación Orientada objetos</option>
+						<option value="5">Oposita INAP</option>
 					</select>
 				</div>
 				
@@ -67,13 +68,13 @@ echo'<pre>'; print_r($_SESSION); echo'</pre>';
 				<div class="form-group text-left">
 				<div class="form-row">
 					<div class="col-1 text-right">
-						<input type="radio" id="uno" name="respuestaCorrecta" value="1" />
+						<input type="radio" id="uno" name="idRespuestaCorrecta" value="1" />
 					</div>
 					<div class="col-2 text-left">
-						<label for="resp1">Opción 1</label>
+						<label for="resp-1">Opción 1</label>
 					</div>
 					<div class="col-9 text-left">
-						<input class="form-control" type="text" name="resp1" id="resp1"  />
+						<input class="form-control" type="text" name="resp-1" id="resp-1"  />
 					</div>
 				</div>
 				</div> 
@@ -82,13 +83,13 @@ echo'<pre>'; print_r($_SESSION); echo'</pre>';
 				<div class="form-group text-left">
 				<div class="form-row">
 					<div class="col-1 text-right">
-						<input type="radio" id="dos" name="respuestaCorrecta" value="2" />
+						<input type="radio" id="dos" name="idRespuestaCorrecta" value="2" />
 					</div>				
 					<div class="col-2 text-left">
-						<label for="resp2">Opción 2</label>
+						<label for="resp-2">Opción 2</label>
 					</div>
 					<div class="col-9 text-left">
-						<input class="form-control" type="text" name="resp2" id="resp2"  />
+						<input class="form-control" type="text" name="resp-2" id="resp-2"  />
 					</div>
 				</div>
 				</div>
@@ -98,13 +99,13 @@ echo'<pre>'; print_r($_SESSION); echo'</pre>';
 				<div class="form-group text-left">
 				<div class="form-row">
 					<div class="col-1 text-right">
-						<input type="radio" id="tres" name="respuestaCorrecta" value="3" />
+						<input type="radio" id="tres" name="idRespuestaCorrecta" value="3" />
 					</div>
 					<div class="col-2 text-left">
-						<label for="resp3">Opción 3</label>
+						<label for="resp-3">Opción 3</label>
 					</div>
 					<div class="col-9 text-left">
-						<input class="form-control" type="text" name="resp3" id="resp3"  />
+						<input class="form-control" type="text" name="resp-3" id="resp-3"  />
 					</div>
 				</div>
 				</div>

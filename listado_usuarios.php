@@ -2,13 +2,36 @@
 	//include("verifica_admin.php");  ?>
 <!DOCTYPE html>
 <html lang="es">
-<head>
+<head
 	<title>Listado de Usuarios</title>
 	<meta charset="utf-8" /> 
 	
-	<?php
-		include("cdns.php");
-	?>
+	<?php include("cdns.php"); 	?>
+
+
+<script type="text/javascript">
+	function confirmaModificar(codigo, nombre) {
+		var respuesta= confirm("¿Está seguro de que quiere modificar los datos del usuario "+nombre+" ?");
+		if (respuesta == true) {
+			//alert("has aceptado modificar");
+			location.href="modificar_usuario.php?id="+codigo;			
+		}
+		else {
+			alert("Has elegido que no modificar");
+		}
+	}
+
+
+	function confirmaEliminar(codigo, nombre) {
+			var respuesta = confirm("¿Está seguro de que quiere ELIMINAR al usuario "+nombre+"?");
+			if (respuesta == true) {
+				//alert("Has aceptado eliminar el usuario.");
+				location.href="eliminar_usuario.php?cod="+codigo;
+			} else {
+				alert("Has declinado eliminar al usuario");
+			}
+	}
+</script>
 	
 </head> 
 
@@ -31,6 +54,7 @@
 					switch ($control)  {
 						case -1 : $mensaje='Error: El usuario ya existe en la base de datos'; $tipoMensaje = 'danger';  break;
 						case 1 : $mensaje='Alta usuario realizada con éxito'; $tipoMensaje = 'success';  break;					
+						case -2 : $mensaje='Usuario no pudo ser eliminado'; $tipoMensaje = 'danger';  break;
 						case 2 : $mensaje='Usuario eliminado correctamente'; $tipoMensaje = 'success';  break;
 						case 3 : $mensaje='Usuario actualizado correctamente';  $tipoMensaje = 'success'; break;
 						case 4 : $mensaje='La contraseña del usuario se actualizó.';  $tipoMensaje = 'success'; break;
@@ -44,7 +68,7 @@
 			</div>
 		
 			<div class="col-sm-6 text-right">
-				<a href="alta_usuario.php" class="btn btn-primary">Nuevo Usuario</a>
+				<a href="form_alta_usuario.php" class="btn btn-primary">Nuevo Usuario</a>
 				<a href="index.php" class="btn btn-secondary"><i class="fas fa-arrow-left fa-1x"></i> Panel de Gestión</a>
 			</div>		
 		</div>
@@ -85,14 +109,16 @@
 	$tiposUsuario = array(1=>"Alumno", 2=>"Profesor");
 	while ( $reg = mysqli_fetch_array($registros) ) {
 		?>
-		<tr>
+	<tr>
 			<th><?php echo $reg['id']; ?> </th>
 			<td><?php echo $reg['nombre']; ?> </td>
 			<td><?php echo $reg['email']; ?> </td>
 			<?php   /* echo '<td>'.$reg['contra'].'</td>'; */?>			
 			<td><?php echo $tiposUsuario[$reg['tipo']]; ?></td>
-			<td><a href="modificar_usuario.php?id=<?php echo $reg['id'];?>"><i class="fas fa-edit"></i></a> </td>
-			<td><a href="eliminar_usuario.php?id=<?php echo $reg['id'];?>"><i class="fas fa-trash-alt"></i></a> </td>
+			<td><a href="javascript:confirmaModificar(<?php echo $reg['id'];?>, '<?php echo $reg['nombre']; ?>')"><i class="fas fa-edit"></i></a> </td>
+
+			<td><a href="javascript:confirmaEliminar(<?php echo $reg['id'];?>, '<?php echo $reg['nombre']; ?>')"><i class="fas fa-trash-alt"></i></a> </td>
+
 			<td><a href="modificar_password.php?id=<?php echo $reg['id'];?>"><i class="fas fa-key fa-1x"></i> Cambiar contraseña</a></td>
 		</tr>
 	<?php

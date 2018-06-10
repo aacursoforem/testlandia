@@ -1,6 +1,6 @@
 <?php
 
-if (file_exists("cdns.php")) { // en caso de estar en directorio principal ruta añadida es vacio
+if (file_exists("directorio_raiz.php")) { // en caso de estar en directorio principal ruta añadida es vacio
 	$ruta_aniade = '';	
 }
 else {  

@@ -12,14 +12,14 @@ if (isset($_POST['nombre'])) {
 	include("conexion.php");
 	
 	// Buscamos si ya existe un usuario con ese mismo email
-	$sql_1 = "SELECT id FROM usuarios WHERE email='$correo' LIMIT 1";
+	$sql_1 = "SELECT id FROM usuarios WHERE nombre='$nombre' LIMIT 1";
 	$busqueda = mysqli_query($conexion, $sql_1) or die(mysqli_error($conexion));
 	$num_resultados = mysqli_num_rows($busqueda);
 	if ($num_resultados > 0) { // Ya existe un usuario en la BD con ese correo electrónico
 		echo "Ya existe el usuario";
 		$codigoDevuelto = -1;
 	
-	} else {  // no existe un usuario con ese correo. Damos de alta el nuevo usuario
+	} else {  // no existe un usuario con ese nombre. Damos de alta el nuevo usuario
 		$sql = "INSERT INTO usuarios (nombre, email, pass, tipo) VALUES ('$nombre', '$correo', '$pass_cifrada', '$tipo')" ;		
 		$codigoDevuelto = 1;
 		// Ejecutamos la sentencia de acción anterior

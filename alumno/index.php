@@ -1,9 +1,13 @@
+<?php
+	require("../verifica_alumno.php");
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
 	<title>Alumnos</title>
 	<meta charset="utf-8" />
 	<?php
+
 		include("../cdns.php");  ?>
 	
 </head>

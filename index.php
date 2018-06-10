@@ -19,7 +19,7 @@
 <body>
 <header>	
 	<?php include("barra-menu.php"); ?>
-	<div class="jumbotron text-center"
+	<div class="jumbotron text-center">
 			<h1>Menú principal</h1>
 	</div>
 </header>

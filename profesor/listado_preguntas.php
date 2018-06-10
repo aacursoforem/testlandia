@@ -1,6 +1,5 @@
 <?php	// Verificamos que el visitante tiene credencial de administrador
-	// include("verifica_admin.php");  
-	session_start();
+	require("../verifica_profesor.php");
 	// echo'<pre>'; print_r($_SESSION); echo'</pre>';
 	$id_profe =$_SESSION['id_usuario'];
 //echo '<p>El id de profesor es '.$id_profe.'</p>';
@@ -18,13 +17,15 @@
 <style type="text/css">
 
 	.pregunta { color: blue; }
+	.correcta { color: green; }
 
 </style>
 	
 </head> 
 
 <body>
-<?php   include("../barra-menu.php");  ?>
+<?php   include("../barra-menu.php");  
+?>
 	<div class="jumbotron text-center">
 			<h1>Listado de preguntas</h1>
 	</div>
@@ -42,9 +43,9 @@
 					$mensaje =''; $tipoMensaje='success';
 					switch ($control)  {
 						case -1 : $mensaje='El DNI ya existe en la base de datos'; $tipoMensaje = 'danger';  break;
-						case 1 : $mensaje='Alta realizada con éxito'; $tipoMensaje = 'success';  break;
-						case 2 : $mensaje='Cliente eliminado correctamente'; $tipoMensaje = 'success';  break;
-						case 3 : $mensaje='Cliente actualizado correctamente';  $tipoMensaje = 'success'; break;				
+						case 1 : $mensaje='Pregunta añadida con éxito'; $tipoMensaje = 'success';  break;
+						case 2 : $mensaje='Pregunta eliminada correctamente'; $tipoMensaje = 'success';  break;
+						case 3 : $mensaje='Pregunta actualizada correctamente';  $tipoMensaje = 'success'; break;				
 					}
 					echo '<p class="alert alert-'.$tipoMensaje.'">'.$mensaje.'</p>';	
 				} 
@@ -66,6 +67,18 @@
 	<table class="table  text-left">
 	
 <?php
+	if (isset($_GET['ini'])) {  // indica el elemento a partir del cual empezar a mostrar
+			$inicio = $_GET['ini'];
+		} else {
+			$inicio = 0;
+		}		
+		$REGISTROS_PAGINA = 5;
+		$num_total_registros = 0;
+
+
+	$num_total_registros = mysqli_num_rows($sql_num_total);
+	$reg_total_mostrados = $inicio + $REGISTROS_PAGINA;
+
 	// Conectamos a la base de datos
 	include "../conexion.php";	
 	
@@ -76,18 +89,25 @@
 	// Ejecutamos la consulta y guardamos el resultSet que devuelve en la variable -$registros-)
 	$registros = mysqli_query($conexion, $sql)  or die ("Error buscando preguntas<br/> $sql");
 	// Con el resultSet guardado ya en la variable $registros, podemos cerrar la conexión a la BD
+
+	$num_total_registros = mysqli_num_rows($registros);
+	$reg_total_mostrados = $inicio + $REGISTROS_PAGINA;
+	$sql2 = $sql . " LIMIT $inicio, $REGISTROS_PAGINA ";
+	$registros = mysqli_query($conexion, $sql2)  or die ("Error buscando preguntas<br/> $sql");
+
 ?>
 
 <thead class="thead-dark">
 		<tr>
 			<td colspan="2">Profesor: <b> <?php echo $_SESSION['usuario']; ?></b></td>
 			<td colspan="3"><form id="">
-				<label for="categoria">Filtras por categoría</label>
+				<label for="categoria">Filtrar por categoría</label>
 				<select id="categoria" name="categoria">
 					<option value="1">Geografía</option>
 					<option value="2">Sistemas operativos</option>
 					<option value="3">BB.DD.</option>
 					<option value="4">POO</option>
+					<option value="5">Oposita INAP</option>
 				</select>
 				<button type="">Filtrar</button>
 				</form>
@@ -107,15 +127,15 @@
 	// Recorremos el resultSet para ir extrayendo/mostrando los resultados devueltos
 	// Vamos añadiendo a la celda de la tabla el dato tomado del correspondiente valor
 	// guardado en el variable $reg
-	$tiposCategoria = array(1=>"Geografía", 2=>"Sistemas operativos", 3=>"Bases de datos", 4=>"Programación Orientada a Objetos");
+	$tiposCategoria = array(1=>"Geografía", 2=>"Sistemas operativos", 3=>"Bases de datos", 4=>"Programación Orientada a Objetos", 5=>"INAP Oposita");
 
 	while ( $reg = mysqli_fetch_array($registros) ) {
 		$id_pregunta = $reg['id'];
 		?>
 		<tr class="pregunta">
 			<th><?php echo $reg['id']; ?> </th>
-			<td><?php echo $tiposCategoria[$reg['id_categoria']]; ?> </td>
-			<td><?php echo $reg['pregunta'];?></td>			
+			<td><?php echo $tiposCategoria[$reg['id_categoria']]; ?></td>
+			<td><?php echo utf8_encode($reg['pregunta']);?></td>			
 			<td><a href="form_mod_pregunta.php?id=<?php echo $reg['id'];?>"><i class="fas fa-edit"></i></a> </td>
 			<td><a href="eliminar_pregunta.php?id=<?php echo $reg['id'];?>"><i class="fas fa-trash-alt"></i></a> </td>
 		</tr>
@@ -125,15 +145,12 @@
 		$respuestas = mysqli_query($conexion, $sql_res) or die ("Error buscando respuestas");
 		while ($reg_res = mysqli_fetch_array($respuestas) ) {
 		?>
-			<tr  class="respuesta" id="">
-			<th>&nbsp; </th> <!-- <th> <?php echo $reg_res['id']; ?> </th>  -->
-			<td><?php  ($reg_res['es_correcta'] == true ? $v='Correcta' : $v=''); echo $v; ?> </td>
-			<td><?php echo $reg_res['respuesta'];?></td>	
-			<td>&nbsp;</td>			<td>&nbsp;</td>
-<!--		
-			<td><a href="modificar_respuesta.php?id=<?php echo $reg_res['id'];?>"><i class="fas fa-edit"></i></a> </td>
-			<td><a href="eliminar_respuesta.php?id=<?php echo $reg_res['id'];?>"><i class="fas fa-trash-alt"></i></a> </td>
--->
+		<tr class="respuesta" id="">
+			<td>&nbsp;</td> 
+			<td><?php  ($reg_res['es_correcta'] == 1 ? $v='correcta' : $v=''); echo $v; ?></td>
+			<?php echo '<td colspan="1" class="'.$v.'">'.utf8_encode($reg_res['respuesta']);
+			?>
+			</td><td colspan="2"></td>			
 		</tr>
 <?php
 		}  // fin while respuestas
@@ -142,10 +159,60 @@
 	// Liberamos los recursos utilizados por mysqli
 	mysqli_free_result($registros);
 	mysqli_close($conexion);
-	?>
+?>
 
 	</tbody>
 	</table>
+
+<?php
+	if ($num_total_registros > 0) {
+?>
+<!-- PAGINACIÓN -->
+		<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+			 <div class="btn-group mr-2 mx-auto" role="group" aria-label="First group">		
+		<?php
+		// Mostramos el enlace anterior si $inicio no es cero(no estamos en el primer grupo de resultados)
+		// en caso contrario mostramos en lugar de un enlace activo un texto
+		if ($inicio == 0) {
+			echo'<a class="btn btn-secondary">Anterior</a>&nbsp;';		
+		} else {
+			$anterior = $inicio - $REGISTROS_PAGINA;
+			echo'<a class="btn btn-primary" href="listado_preguntas.php?ini='.$anterior.'">Anterior</a>&nbsp;';
+		} 
+		
+		$paginas=ceil($num_total_registros/$REGISTROS_PAGINA);
+		for ($i=1; $i<=$paginas; $i++) {
+			$valor = ($i-1) * $REGISTROS_PAGINA;
+			if ($valor != $inicio) {
+				echo '<a class="btn btn-primary" href="listado_preguntas.php?ini='.$valor.'" >'.$i.'</a>&nbsp;';
+			} else {
+				echo '<span class="btn btn-secondary">'.$i.'</span>&nbsp;';
+			}		
+		}
+
+		// Si en el paso anterior se mostraron 3, (y no es multiplo de 3) quedan registros por mostrar
+
+		if ($reg_total_mostrados < $num_total_registros) {
+
+			$siguiente = $inicio + $REGISTROS_PAGINA;
+
+			echo'<a class="btn btn-primary" href="listado_preguntas.php?ini='.$siguiente.'">Siguiente</a>';
+
+		} else {
+
+			echo '&nbsp;<span class="btn btn-secondary">Siguente</span>';
+
+		}		
+
+	?>
+		</div>
+		</div>
+		<!--  FIN DE PAGINACIÓN  -->
+
+<?php
+} // fin de $num_total_registros>0
+?>
+
 		<div class="footer text-center">
 			<p>Creado por mi Mismo</p>
 		</div>

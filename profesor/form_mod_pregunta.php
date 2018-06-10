@@ -1,6 +1,6 @@
 <?php
-	session_start();
-echo'<pre>'; print_r($_SESSION); echo'</pre>';
+	require("../verifica_profesor.php");
+// echo'<pre>'; print_r($_SESSION); echo'</pre>';
 //echo '<p>El id del profesor es '.$_SESSION['id_usuario'].'</p>';
 ?>
 <!DOCTYPE html>
@@ -28,9 +28,9 @@ echo'<pre>'; print_r($_SESSION); echo'</pre>';
 	$reg = mysqli_fetch_array($res_preg);
 	$id_pregunta = $reg['id'];
 	$id_categoria = $reg['id_categoria'];
-	$id_tipo = $reg['id_tipo'];
+	//$id_tipo = $reg['id_tipo'];
 	$id_profe = $reg['id_profe'];
-	$num_respuestas = $reg['num_respuestas'];
+	//$num_respuestas = $reg['num_respuestas'];
 	$pregunta = $reg['pregunta'];
 	
 	
@@ -65,6 +65,7 @@ echo'<pre>'; print_r($_SESSION); echo'</pre>';
 						<option value="2" <?php if ($id_categoria == 2) echo 'selected="selected"'; ?>>Sistemas operativos</option>
 						<option value="3" <?php if ($id_categoria == 3) echo 'selected="selected"'; ?>>Bases de datos</option>
 						<option value="4" <?php if ($id_categoria == 4) echo 'selected="selected"'; ?>>Programación Orientada objetos</option>
+						<option value="5" <?php if ($id_categoria == 5) echo 'selected="selected"'; ?>>Oposita INAP</option>
 					</select>
 				</div>
 				
@@ -76,7 +77,7 @@ echo'<pre>'; print_r($_SESSION); echo'</pre>';
 				
 				<div class="form-group text-left">
 					<label for="pregunta">Pregunta</label>
-					<input class="form-control" type="text" name="textoPregunta" id="textoPregunta" value="<?php echo $pregunta; ?>"/>
+					<input class="form-control" type="text" name="textoPregunta" id="textoPregunta" value="<?php echo utf8_encode($pregunta); ?>"/>
 				</div>
 				
 				<div class="form-group text-left">
@@ -101,7 +102,7 @@ echo'<pre>'; print_r($_SESSION); echo'</pre>';
 					</div>
 					-->
 					<div class="col-9 text-left">
-						<input class="form-control" type="text" name="resp-<?php echo $clave; ?>" id="resp-<?php echo $clave; ?>" value="<?php echo $respuestas[$clave]; ?>" />
+						<input class="form-control" type="text" name="resp-<?php echo $clave; ?>" id="resp-<?php echo $clave; ?>" value="<?php echo utf8_encode($respuestas[$clave]); ?>" />
 					</div>
 				</div>
 				</div> 
@@ -110,8 +111,7 @@ echo'<pre>'; print_r($_SESSION); echo'</pre>';
 					} // fin foreach
 				?>
 				
-	
-				
+			
 								
 				<div class="form-group text-center">				
 					<button class="btn btn-danger" type="reset"><i class="fas fa-ban fa-1x"></i> Limpiar</button>

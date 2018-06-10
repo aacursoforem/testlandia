@@ -1,9 +1,8 @@
 <?php	// Verificamos que el visitante tiene credencial de administrador
-	// include("verifica_admin.php");  
-	session_start();
+	require("../verifica_alumno.php");
 //	 echo'<pre>'; print_r($_SESSION); echo'</pre>';
 	$id_alumno =$_SESSION['id_usuario'];
-//echo '<p>El id de profesor es '.$id_profe.'</p>';
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -49,7 +48,7 @@
 	include "../conexion.php";	
 	
 	// Buscamos un listado de preguntas disponibles (más adelante restringidas a una categoría)
-	$sql = "SELECT * FROM preguntas LIMIT 1, 3";
+	$sql = "SELECT * FROM preguntas LIMIT 1, 10";
 	// or die(mysqli_errno($conexion) . mysqli_error($conexion));
 	
 	// Ejecutamos la consulta y guardamos el resultSet que devuelve en la variable -$registros-)
@@ -76,7 +75,7 @@
 		<tr>
 			<td colspan="2">Alumno: <b> <?php echo $_SESSION['usuario']; ?></b></td>
 			<td colspan="3"><form id="">
-				<label for="categoria">Filtras por categoría</label>
+				<label for="categoria">Filtrar por categoría</label>
 				<select id="categoria" name="categoria">
 					<option value="1">Geografía</option>
 					<option value="2">Sistemas operativos</option>
@@ -110,7 +109,7 @@
 		$i++;
 		?>
 
-		<p class="pregunta"><?php echo $i; echo $reg['pregunta']; echo'  '.$reg['id'];?></p>
+		<p class="pregunta"><?php echo $i; echo '. '.utf8_encode($reg['pregunta']); ?></p>
 		<ul>
 			
 	<?php
@@ -128,7 +127,7 @@
 			<li  class="respuesta">
 		
 				<input type="radio" id="<?php echo $nameid; ?>"< name="<?php echo $nameid; ?>" value="<?php echo $valor; ?>"/> 
-				<?php echo $reg_res['respuesta'].' '.$reg_res['id'];?>
+				<?php echo utf8_encode($reg_res['respuesta']);?>
 			</li>	
 			
 

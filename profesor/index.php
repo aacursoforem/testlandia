@@ -1,5 +1,5 @@
 <?php
-	session_start();
+	require("../verifica_profesor.php");
 	// echo'<pre>'; print_r($_SESSION); echo'</pre>';
 ?>
 <!DOCTYPE html>
