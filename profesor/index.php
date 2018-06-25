@@ -22,6 +22,8 @@
 	
 	<p><a href="listado_preguntas.php">Listar preguntas</a></p>
 	
+	<p><a href="form_cambiar_categoria.php">Preguntas con categorías</a></p>
+	
 	<p><a href="../index.php">Volver al inicio</a></p>
 	
 </body>

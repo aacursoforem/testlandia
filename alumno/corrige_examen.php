@@ -1,12 +1,15 @@
-<?php
+<?php	// Verificamos que el visitante tiene credencial de administrador
 	require("../verifica_alumno.php");
+//	 echo'<pre>'; print_r($_SESSION); echo'</pre>';
+	$id_alumno =$_SESSION['id_usuario'];
+	/************************ FUNCIÓN imprimeArray*********************************/
 function imprimeArray($vector, $nombre=''){
 	if ($nombre !='') echo 'Contenido del vector <b>'.$nombre.'</b>';
-	echo '<pre>';
-	print_r($vector);
-	echo '</pre>';
+	echo '<pre>'; 	print_r($vector); 	echo '</pre>';
 }
 
+
+/************************ FUNCIÓN imprimePregunta*********************************/
 function imprimePregunta($numPregunta, $id_pregunta, $id_respuesta_elegida){
 	// include("../conexion.php");
 	global $conexion;
@@ -20,7 +23,7 @@ function imprimePregunta($numPregunta, $id_pregunta, $id_respuesta_elegida){
 	echo'<p class="pregunta">'.$numPregunta.'. '.utf8_encode($reg_preg['pregunta']).'</p><ul class="respuestas">';	
 	
 	while ($reg_res = mysqli_fetch_array($respuestas) ) {
-		$estilo ='b';
+		$estilo =' ';
 		if ($id_respuesta_elegida == $reg_res['id']) {
 			$elegido = 'checked="checked"';			
 		} else $elegido='';
@@ -34,17 +37,42 @@ function imprimePregunta($numPregunta, $id_pregunta, $id_respuesta_elegida){
 		
 		$valor = 'res-'.$reg_res['id'];
 		$nameid = 'preg-'.$reg_res['id'];
-		echo'<li '.$estilo.'>';
-		echo'<input type="radio" id="'.$nameid.'" name="'.$nameid.'" value="'.$valor.'" '.$elegido.'>'.utf8_encode($reg_res['respuesta']);
+		echo' <li'.$estilo.'>';
+		echo'<input type="radio" id="'.$nameid.'" name="'.$nameid.'" value="'.$valor.'" '.$elegido.' disabled="disabled">'.utf8_encode($reg_res['respuesta']);
 		echo'</li>';	
 	}
 	echo'</ul>';
 }  // fin function imprimePregunta
 
+/*********************************************************************************************/
+?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Examen de alumno</title>
+	<meta charset="utf-8" /> 
+	<?php
+		include("../cdns.php");
+		
+		// include("cdns.php");
+	?>
+	<style type="text/css">	
+		.pregunta { color: blue; }
+		li {
+			list-style-type: none;	
+		}
+	</style>
+	
+</head> 
+<body>
+<?php   include("../barra-menu.php");  ?>
+	<div class="jumbotron text-center">
+			<h1>Resultado de examen</h1>
+	</div>
 
+<?php
 
-	imprimeArray($_POST, '$_POST');
-
+	// imprimeArray($_POST, '$_POST');
 
 	foreach ($_POST as $clave=>$valor)
 	if (strpos($clave, 'preg') > -1 ) {
@@ -72,14 +100,10 @@ function imprimePregunta($numPregunta, $id_pregunta, $id_respuesta_elegida){
 		}
 
 	// Imprime (guarda en variable para imprimir) texto de la pregunta, con respuestas y dibujo de OK o de fallo
-
-
 	}
-	echo'<p>Se han contestado '.$conta.' preguntas y se han acertado '.$numAciertos.'</p>';
+	
+	echo'<p>Se han acertado '.$numAciertos.' de '.$conta.' preguntas respondidas</p>';
 
-
-	//imprimePregunta(1, 2, 4);
-	//imprimePregunta(2, 2, 5);
 	
 	$i = 0;
 	foreach ($preguntas as $clave => $valor) {
@@ -89,3 +113,6 @@ function imprimePregunta($numPregunta, $id_pregunta, $id_respuesta_elegida){
 
 	mysqli_close($conexion);
 ?>
+	<p><a href="index.php">Continuar</a></p>
+</body>
+</html>

@@ -36,6 +36,9 @@
 //	header("location:listado_peguntas.php?control=3");
 	echo'<p>Actualización correcta</p>';
 	echo'<p><a href="listado_preguntas.php?control=3">Volver al listado</p>';
+	// TODO. Para volver a la misma pantalla necesitamos conocer el número de orden del registro modificado
+	// Habría que recibirlo desde el script listado_preguntas.php
+	//echo'<p><a href="listado_preguntas.php?control=3&ini='.($id_pregunta-1).'">Volver al listado</p>';
 
 
 

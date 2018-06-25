@@ -4,11 +4,38 @@
 	//echo'<pre>'; print_r($_GET); echo'</pre>';
 	$id_profe =$_SESSION['id_usuario'];
 //echo '<p>El id de profesor es '.$id_profe.'</p>';
+
+/*********************************************************************************/
+	function mostrarSelect($tabla_opciones, $name_id, $label, $id_elegido) {
+		if (!isset($conexion)) {
+			include("../conexion.php");	
+		} 
+		$sql = "SELECT id, nombre FROM $tabla_opciones ";
+		$result = mysqli_query($conexion, $sql) or die ("Problema al consultar opciones de select");
+		$buf ='<label for="'.$name_id.'">'.$label.'</label>';
+		$buf .='<select id="'.$name_id.'" name="'.$name_id.'">';
+		while ($reg = mysqli_fetch_assoc($result) ) {
+			$buf .='<option value="'.$reg['id'].'"';
+			if ($reg['id'] == $id_elegido) {
+				$buf .= ' selected="selected">';
+			} else {
+				$buf .='>';
+			}
+			$buf .=utf8_encode($reg['nombre']).'</option>';
+			
+		}
+		$buf .='</select>';
+		return $buf;		
+	}
+
+/****************************************************************************/
+
+
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Listado de Preguntas</title>
+	<title>Listado de Preguntas por categoría</title>
 	<meta charset="utf-8" /> 
 	<?php
 		include("../cdns.php");
@@ -28,54 +55,21 @@
 <?php   include("../barra-menu.php");  
 ?>
 	<div class="jumbotron text-center">
-			<h1>Listado de preguntas</h1>
+			<h1>Listado de preguntas por categoría</h1>
 	</div>
 	
 	<div class="container">
 		<div class="row" style="padding-bottom:10px;">
 			<div class="col-sm-6 text-left">
-			<?php
-			// En caso de que la llamada al fichero incluya una variable de nombre control,
-			// dependiendo del valor que tome ésta mostraremos uno u otro mensaje al usuario
-/*
-				if (isset($_REQUEST['control'])) {
-					$control = $_REQUEST['control'];
-					//echo'<p style="color:red">El valor de control es: '.$control.'</p>';
-					$mensaje =''; $tipoMensaje='success';
-					switch ($control)  {
-						case -1 : $mensaje='El DNI ya existe en la base de datos'; $tipoMensaje = 'danger';  break;
-						case 1 : $mensaje='Pregunta añadida con éxito'; $tipoMensaje = 'success';  break;
-						case 2 : $mensaje='Pregunta eliminada correctamente'; $tipoMensaje = 'success';  break;
-						case 3 : $mensaje='Pregunta actualizada correctamente';  $tipoMensaje = 'success'; break;				
-					}
-					echo '<p class="alert alert-'.$tipoMensaje.'">'.$mensaje.'</p>';	
-				} 
-*/
-			?>
 
-			</div>
-		
-			<div class="col-sm-6 text-right">
-				<a href="form_alta_pregunta.php" class="btn btn-primary">Nuevo Pregunta</a>
-				<a href="index.php" class="btn btn-secondary"><i class="fas fa-arrow-left fa-1x"></i> Panel de Gestión</a>
-			</div>		
+			</div>	
 		</div>
 	</div>
 	
 	
-	<!-- Mostramos la cabecera de la tabla -->
-	<div class="container">
-	<table class="table  text-left">
+
 	
 <?php
-
-	if (isset($_POST['categoria']) ){  //&& is_int($_POST['categoria']) ) {
-		$id_categoria = $_POST['categoria'];		
-		$condicionCategoria = ' id_categoria = '.$id_categoria;		
-	} else {
-		$condicionCategoria = " 1 ";
-	}
-
 	if (isset($_GET['ini'])) {  // indica el elemento a partir del cual empezar a mostrar
 			$inicio = $_GET['ini'];
 		} else {
@@ -89,7 +83,7 @@
 	include "../conexion.php";	
 	
 	// Preparamos la consulta a realizar. Una consulta de selección devuelve un resultSet 
-	$sql = "SELECT * FROM preguntas WHERE id_profe='$id_profe' AND $condicionCategoria";
+	$sql = "SELECT * FROM preguntas WHERE id_profe='$id_profe'";
 	// or die(mysqli_errno($conexion) . mysqli_error($conexion));
 	
 	// Ejecutamos la consulta y guardamos el resultSet que devuelve en la variable -$registros-)
@@ -102,30 +96,22 @@
 	//echo $sql2;
 	$registros = mysqli_query($conexion, $sql2)  or die ("Error buscando preguntas<br/> $sql");
 
-?>
+	?>
 
+
+
+<form id="" method="post" action="mod_listado_preguntas.php">
+	<!-- Mostramos la cabecera de la tabla -->
+<div class="container">
+<table class="table  text-left">
 <thead class="thead-dark">
 		<tr>
-			<td colspan="2">Profesor: <b> <?php echo $_SESSION['usuario']; ?></b></td>
-			<td colspan="3"><form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="">
-				<label for="categoria">Filtrar por categoría</label>
-				<select id="categoria" name="categoria">
-					<option value="1">Geografía</option>
-					<option value="2">Sistemas operativos</option>
-					<option value="3">BB.DD.</option>
-					<option value="4">POO</option>
-					<option value="5">Oposita INAP</option>
-				</select>
-				<button type="submit">Filtrar</button>
-				</form>
-			</td>
+			<td colspan="3">Profesor: <b> <?php echo $_SESSION['usuario']; ?></b></td>
 		</tr>
 		<tr>
 			<th>Id</th>
 			<th>Categoría</th>
-			<th>Pregunta</th>			
-			<th>Modificar</th>
-			<th>Eliminar</th>
+			<th>Pregunta</th>
 		</tr>
 	<thead>
 	<tbody>
@@ -141,26 +127,10 @@
 		?>
 		<tr class="pregunta">
 			<th><?php echo $reg['id']; ?> </th>
-			<td><?php echo $tiposCategoria[$reg['id_categoria']]; ?></td>
-			<td><?php echo utf8_encode($reg['pregunta']);?></td>			
-			<td><a href="form_mod_pregunta.php?id=<?php echo $reg['id'];?>"><i class="fas fa-edit"></i></a> </td>
-			<td><a href="eliminar_pregunta.php?id=<?php echo $reg['id'];?>"><i class="fas fa-trash-alt"></i></a> </td>
+			<td><?php echo  mostrarSelect($tabla_opciones='opciones_categoria', $name_id='id_preg-'.$reg['id'], $label='Categoría', $id_elegido=$reg['id_categoria']); ?></td>
+			<td><?php echo utf8_encode($reg['pregunta']);?></td>						
 		</tr>
-	<?php
-		$sql_res = "SELECT * FROM respuestas WHERE id_pregunta= $id_pregunta "; //$reg['id']";  // LIMIT 3";
-
-		$respuestas = mysqli_query($conexion, $sql_res) or die ("Error buscando respuestas");
-		while ($reg_res = mysqli_fetch_array($respuestas) ) {
-		?>
-		<tr class="respuesta" id="">
-			<td>&nbsp;</td> 
-			<td><?php  ($reg_res['es_correcta'] == 1 ? $v='correcta' : $v=''); echo $v; ?></td>
-			<?php echo '<td colspan="1" class="'.$v.'">'.utf8_encode($reg_res['respuesta']);
-			?>
-			</td><td colspan="2"></td>			
-		</tr>
-<?php
-		}  // fin while respuestas
+	<?php		
 	
 	}  // fin while preguntas
 	// Liberamos los recursos utilizados por mysqli
@@ -170,7 +140,12 @@
 
 	</tbody>
 	</table>
-
+	<div class="form-group text-center">				
+		<button class="btn btn-danger" type="reset"><i class="fas fa-ban fa-1x"></i> Limpiar</button>
+		<button class="btn btn-primary" type="submit"><i class="fas fa-save fa-1x"></i> Guardar</button>
+	</div>
+				
+</form>
 <?php
 	if ($num_total_registros > 0) {
 ?>
@@ -206,9 +181,7 @@
 			echo'<a class="btn btn-primary" href="'.basename(__FILE__).'?ini='.$siguiente.'">Siguiente</a>';
 
 		} else {
-
 			echo '&nbsp;<span class="btn btn-secondary">Siguente</span>';
-
 		}		
 
 	?>
